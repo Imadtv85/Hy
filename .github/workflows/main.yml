@@ -13,9 +13,9 @@ jobs:
       - name: Stream to Facebook using RTMPS
         run: |
           ffmpeg -re \
-          -i "http://mo3ad.xyz/GpfGbMNfzW/XJFgkQnpXd/8" \
+          -i "http://bdd78.4rouwanda-shop.store/live/918454578001/index.m3u8?t=eNpF3SJ8IXtdB1d9TFZ34Q&e=1734060798" \
           -c:v libx264 -preset medium -maxrate 2500k -bufsize 5000k \
           -vf "scale=1280:-1" -g 60 -c:a aac -b:a 128k \
           -strict experimental \
-          -f flv "rtmps://live-api-s.facebook.com:443/rtmp/FB-122129503652499805-0-AbzHT9gnLPTTBiop" \
+          -f flv "rtmps://live-api-s.facebook.com:443/rtmp/FB-568904565881070-0-AbyPk-19xOXmMzNf" \
           -timeout 5000000 -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5
