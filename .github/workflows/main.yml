@@ -1,28 +1,31 @@
-name: Live Streaming to Facebook via RTMPS
+name: Facebook Live Stream
 
 on:
   push:
     branches:
-      - main  # تأكد من أنك تستخدم الفرع الصحيح
-  workflow_dispatch:  # يمكن تشغيل الـ Action يدويًا
+      - main  # أو أي فرع آخر ترغب في تفعيل الـ Action عند دفع تغييرات له
 
 jobs:
   stream:
-    runs-on: ubuntu-latest  # العمل على أحدث نسخة من أوبونتو
+    runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v2
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      - name: Install FFmpeg
-        run: |
-          sudo apt update
-          sudo apt install -y ffmpeg
+    - name: Set up FFmpeg
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y ffmpeg
 
-      - name: Start streaming to Facebook with m3u8 and stream key
-        run: |
-          M3U8_URL="http://mo3ad.xyz/GpfGbMNfzW/XJFgkQnpXd/14"  # رابط m3u8
-          STREAM_KEY="FB-568384372599756-0-Aby6e-rmTk5Qe1Iw"  # المفتاح الخاص بالبث
-          STREAM_URL="rtmps://live-api-s.facebook.com:443/rtmp/$STREAM_KEY"  # رابط RTMPS للبث
+    - name: Start Facebook Live Stream
+      run: |
+        source_url="http://mo3ad.xyz/GpfGbMNfzW/XJFgkQnpXd/9"  # رابط مصدر الفيديو (استبدله برابطك الخاص)
+        stream_key="FB-568704062567787-0-AbzeAnP-ddQRc0o8"  # مفتاح البث
+        rtmp_url="rtmps://live-api-s.facebook.com:443/rtmp/"
+        watermark_text="IMAD TV"
 
-          ffmpeg -re -i $M3U8_URL -c:v libx264 -preset veryfast -max_muxing_queue_size 1024 -f flv $STREAM_URL
+        ffmpeg -re -i "$source_url" \
+          -vf "drawtext=text='$watermark_text':fontcolor=white:fontsize=30:x=W-tw-10:y=H-th-10, eq=brightness=0.02:saturation=0.8" \
+          -c:v libx264 -preset veryfast -b:v 2500k -maxrate 2500k -bufsize 5000k -g 60 -c:a aac -b:a 128k \
+          -f flv "$rtmp_url$stream_key"
