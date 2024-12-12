@@ -17,5 +17,5 @@ jobs:
           -c:v libx264 -preset medium -maxrate 2500k -bufsize 5000k \
           -vf "scale=1280:-1" -g 60 -c:a aac -b:a 128k \
           -strict experimental \
-          -f flv "rtmps://live-api-s.facebook.com:443/rtmp/FB-122129498810499805-0-Abwnz5xRhkpiH6gs" \
+          -f flv "rtmps://live-api-s.facebook.com:443/rtmp/FB-122129503652499805-0-AbzHT9gnLPTTBiop" \
           -timeout 5000000 -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 5
