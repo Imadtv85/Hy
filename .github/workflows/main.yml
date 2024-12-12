@@ -3,36 +3,26 @@ name: Live Streaming to Facebook via RTMPS
 on:
   push:
     branches:
-      - main  # قم بتحديد الفرع الذي تستخدمه
+      - main  # تأكد من أنك تستخدم الفرع الصحيح
   workflow_dispatch:  # يمكن تشغيل الـ Action يدويًا
 
 jobs:
   stream:
-    runs-on: ubuntu-latest  # العمل على آخر إصدار من أوبونتو
+    runs-on: ubuntu-latest  # العمل على أحدث نسخة من أوبونتو
 
     steps:
-      # خطوة 1: التحقق من الكود
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      # خطوة 2: تثبيت FFmpeg
       - name: Install FFmpeg
         run: |
           sudo apt update
           sudo apt install -y ffmpeg
 
-      # خطوة 3: بدء البث إلى فيسبوك باستخدام m3u8 و stream key عبر RTMPS
       - name: Start streaming to Facebook with m3u8 and stream key
         run: |
-          # تعيين متغيرات المصفوفة والمفتاح
           M3U8_URL="http://mo3ad.xyz/GpfGbMNfzW/XJFgkQnpXd/14"  # رابط m3u8
-          STREAM_KEY="FB-568384372599756-0-Aby6e-rmTk5Qe1Iw"  # المفتاح الخاص بك
+          STREAM_KEY="FB-568384372599756-0-Aby6e-rmTk5Qe1Iw"  # المفتاح الخاص بالبث
           STREAM_URL="rtmps://live-api-s.facebook.com:443/rtmp/$STREAM_KEY"  # رابط RTMPS للبث
 
-          # استخدام FFmpeg للبث إلى فيسبوك عبر RTMPS
           ffmpeg -re -i $M3U8_URL -c:v libx264 -preset veryfast -max_muxing_queue_size 1024 -f flv $STREAM_URL
-          
-      # خطوة 4: تحقق من بدء البث (اختياري)
-      - name: Verify stream started
-        run: |
-          echo "Streaming to Facebook with stream key $STREAM_KEY"
