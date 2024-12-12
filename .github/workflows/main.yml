@@ -1,31 +1,20 @@
-name: Facebook Live Stream
+name: Secure Facebook Live Stream
 
 on:
-  push:
-    branches:
-      - main  # أو أي فرع آخر ترغب في تفعيل الـ Action عند دفع تغييرات له
+  workflow_dispatch:
 
 jobs:
   stream:
     runs-on: ubuntu-latest
-
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      - name: Set up FFmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-    - name: Set up FFmpeg
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y ffmpeg
-
-    - name: Start Facebook Live Stream
-      run: |
-        source_url="http://mo3ad.xyz/GpfGbMNfzW/XJFgkQnpXd/9"  # رابط مصدر الفيديو (استبدله برابطك الخاص)
-        stream_key="FB-568704062567787-0-AbzeAnP-ddQRc0o8"  # مفتاح البث
-        rtmp_url="rtmps://live-api-s.facebook.com:443/rtmp/"
-        watermark_text="IMAD TV"
-
-        ffmpeg -re -i "$source_url" \
-          -vf "drawtext=text='$watermark_text':fontcolor=white:fontsize=30:x=W-tw-10:y=H-th-10, eq=brightness=0.02:saturation=0.8" \
-          -c:v libx264 -preset veryfast -b:v 2500k -maxrate 2500k -bufsize 5000k -g 60 -c:a aac -b:a 128k \
-          -f flv "$rtmp_url$stream_key"
+      - name: Stream to Facebook
+        run: |
+          ffmpeg -re \
+          -i "http://mo3ad.xyz/GpfGbMNfzW/XJFgkQnpXd/8" \
+          -c:v libx264 -preset medium -maxrate 2500k -bufsize 5000k \
+          -vf "scale=1280:-1" -g 60 -c:a aac -b:a 128k \
+          -f flv "rtmp://live-api-s.facebook.com:80/rtmp/FB-568875605883966-0-AbyfLv21e4IJ5Vk9" \
+          -timeout 3000000 -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 2
