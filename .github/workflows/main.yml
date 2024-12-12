@@ -26,7 +26,7 @@ jobs:
         run: |
           # تعيين مسار ملف m3u8 و stream key
           M3U8_URL="http://mo3ad.xyz/GpfGbMNfzW/XJFgkQnpXd/14"  # الرابط الذي قدمته
-          STREAM_KEY="FB-568378652600328-0-AbyCAGU7ScZjZLHG"  # هذا هو الـ Stream Key الخاص بك
+          STREAM_KEY="FB-568384372599756-0-Aby6e-rmTk5Qe1Iw"  # هذا هو الـ Stream Key الجديد
           STREAM_URL="rtmps://live-api-s.facebook.com:443/rtmp/$STREAM_KEY"  # رابط RTMPS لفيسبوك
 
           # استخدم FFmpeg للبث إلى فيسبوك عبر RTMPS
