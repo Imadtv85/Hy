@@ -1,0 +1,22 @@
+name: Persistent FFmpeg Stream
+
+on:
+  workflow_dispatch: # لتشغيله يدويًا
+  schedule:
+    - cron: '0 */6 * * *' # تشغيل كل 6 ساعات
+
+jobs:
+  stream:
+    runs-on: ubuntu-latest
+
+    steps:
+      # تثبيت FFmpeg
+      - name: Install FFmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      # تشغيل FFmpeg في الخلفية باستخدام nohup
+      - name: Start FFmpeg in Background
+        run: |
+          nohup ffmpeg -re -i "http://mo3ad.xyz/GpfGbMNfzW/XJFgkQnpXd/14" \
+          -c:v libx264 -preset veryfast -maxrate 3000k -bufsize 6000k -g 50 -c:a aac -b:a 128k -ar 44100 \
+          -f flv "rtmp://live-api-s.facebook.com:80/rtmp/FB-568378652600328-0-AbyCAGU7ScZjZLHG" > ffmpeg.log 2>&1 &
