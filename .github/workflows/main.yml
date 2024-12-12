@@ -20,3 +20,6 @@ jobs:
           nohup ffmpeg -re -i "http://mo3ad.xyz/GpfGbMNfzW/XJFgkQnpXd/14" \
           -c:v libx264 -preset veryfast -maxrate 3000k -bufsize 6000k -g 50 -c:a aac -b:a 128k -ar 44100 \
           -f flv "rtmp://live-api-s.facebook.com:80/rtmp/FB-568378652600328-0-AbyCAGU7ScZjZLHG" > ffmpeg.log 2>&1 &
+          
+          # انتظار بعض الوقت للتأكد من بدء العملية
+          sleep 10
