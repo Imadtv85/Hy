@@ -1,4 +1,4 @@
-name: Secure Facebook Live Stream
+name: Secure Facebook Live Stream (RTMPS)
 
 on:
   workflow_dispatch:
@@ -10,11 +10,11 @@ jobs:
       - name: Set up FFmpeg
         run: sudo apt-get update && sudo apt-get install -y ffmpeg
 
-      - name: Stream to Facebook
+      - name: Stream to Facebook using RTMPS
         run: |
           ffmpeg -re \
           -i "http://mo3ad.xyz/GpfGbMNfzW/XJFgkQnpXd/8" \
           -c:v libx264 -preset medium -maxrate 2500k -bufsize 5000k \
           -vf "scale=1280:-1" -g 60 -c:a aac -b:a 128k \
-          -f flv "rtmp://live-api-s.facebook.com:80/rtmp/FB-568875605883966-0-AbyfLv21e4IJ5Vk9" \
+          -f flv "rtmps://live-api-s.facebook.com:443/rtmp/FB-568875605883966-0-AbyfLv21e4IJ5Vk9" \
           -timeout 3000000 -reconnect 1 -reconnect_streamed 1 -reconnect_delay_max 2
