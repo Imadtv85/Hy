@@ -1,0 +1,43 @@
+name: Facebook Live Stream
+
+on:
+  push:
+    branches:
+      - main  # أو أي فرع آخر ترغب في تشغيله منه
+
+jobs:
+  stream_to_facebook:
+    runs-on: ubuntu-latest  # بيئة التشغيل
+
+    steps:
+      # خطوة 1: تحميل المستودع
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      # خطوة 2: تثبيت FFmpeg
+      - name: Install FFmpeg
+        run: sudo apt-get update && sudo apt-get install -y ffmpeg
+
+      # خطوة 3: تشغيل البث عبر RTMPS
+      - name: Run Stream to Facebook Live
+        run: |
+          STREAM_KEY="your_facebook_stream_key_here"
+          M3U8_URL="your_m3u8_url_here"
+          OUTPUT_PATH="rtmps://live-api-s.facebook.com:443/rtmp/$STREAM_KEY"
+
+          ffmpeg -re \
+              -i "$M3U8_URL" \
+              -c:v libx264 \
+              -preset veryfast \
+              -crf 23 \
+              -g 50 \
+              -keyint_min 50 \
+              -sc_threshold 0 \
+              -b:v 2500k \
+              -maxrate 2500k \
+              -bufsize 5000k \
+              -c:a aac \
+              -b:a 128k \
+              -ar 44100 \
+              -ac 2 \
+              -f flv "$OUTPUT_PATH"
