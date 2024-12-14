@@ -1,0 +1,23 @@
+name: Facebook Live Stream
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  stream_to_facebook:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install FFmpeg
+        run: sudo apt-get install -y ffmpeg
+
+      - name: Make script executable
+        run: chmod +x ./facebook_stream.sh
+
+      - name: Run Stream Script
+        run: ./facebook_stream.sh
