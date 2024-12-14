@@ -21,8 +21,8 @@ jobs:
       # خطوة 3: تشغيل البث عبر RTMPS
       - name: Run Stream to Facebook Live
         run: |
-          STREAM_KEY="your_facebook_stream_key_here"
-          M3U8_URL="your_m3u8_url_here"
+          STREAM_KEY="FB-122129828138499805-0-Abzp5vQsScYXTO5h"
+          M3U8_URL="http://mo3ad.xyz/GpfGbMNfzW/XJFgkQnpXd/14"
           OUTPUT_PATH="rtmps://live-api-s.facebook.com:443/rtmp/$STREAM_KEY"
 
           ffmpeg -re \
